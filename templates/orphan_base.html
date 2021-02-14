@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}ОРФАННЫЕ ДАННЫЕ{% endblock %}
+<!--{% block header %}Последние обновления на сайте{% endblock %}-->
+
+
+{% block content %}
+    <h3>Поиск по диагнозу</h3>
+    <form method="post" action="{% url 'base' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Поиск">
+    </form>
+
+    {{ search_error }}
+
+    {% for diagnosis in diagnos %}
+    <div>
+        <h4>
+        {{ diagnosis.title }}
+        </h4>
+        {% for org in orgs %}
+            <p><h6>Организация: {{ org.title }}</h6></p>
+            <p>Адрес: {{ org.adress|linebreaksbr }}</p>
+            <p>Телефон: {{ org.phone|linebreaksbr }}</p>
+            <p>Web-сайт: <a href="{{ org.link|linebreaksbr }}">{{ org.link|linebreaksbr }}</a></p>
+            <p>E-mail: {{ org.email|linebreaksbr }}</p>
+            <p>ИНН: {{ org.inn|linebreaksbr }}</p>
+            <p>ОГРН: {{ org.ogrn|linebreaksbr }}</p>
+            {% if not forloop.last %}<hr>{% endif %}
+            {% endfor %}
+    </div>
+    {% if not forloop.last %}<hr>{% endif %}
+    {% endfor %}
+
+{% endblock %}
